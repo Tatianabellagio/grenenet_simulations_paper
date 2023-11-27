@@ -75,48 +75,50 @@ Hence, this project aims to answer two main questions:
 
 \section{Methods}
 \subsection{Simulations}
+
+Simulation software
+We used SLiM \citep{Haller2019-oj} for running a total of 189000 independent forward in time genetic simulations based on all combination of parameters plus replicated.  Each simulation represents a single population monitored for 10 generations. SLiM uniquely allowed us to have flexibility to simulate all the parameters below indicated, model specifics to \textit{A. thaliana} biology and work with tree sequences structures to achieve our goals in a computational efficient fashon. 
+
 \subsubsection{Genetic diversity}
-Because standing genetic variation is the subtract of rapid evolutionary changes rather than de novo instroduced genetic diversity via mutations, and to make our simulations more realistic we decided to work with real standing genetic variation. Since we were also interested in using this set of simulation as the ground truth for the GreneNet project we decided to use the genetic information from the the founder populations of this project. The founder population consisted of a pool of 2310 individuals representing 231 different ecotypes coming from divergent climates across the world (full table of ecotypes in Suplementary inforomation).
+Because standing genetic variation is the subtract of rapid evolutionary changes rather than de-novo introduced genetic diversity via mutations, and to make our simulations more realistic we decided to work with real standing genetic variation. Since we were also interested in using this set of simulations as ground truth for the Grene-Net project we decided to use the genetic information from its founder populations. The founder population for all simulations consisted of a pool of 2310 individuals representing 231 different ecotypes coming from divergent climates across the world (full table of ecotypes in suplementary information), making it a highly diverse pool of individuals. 
 
 \subsubsection{Trait genetic architecture}
-For each simulated population selection only acted on one trait. We defined the trait genetic architecture based on three key parameters: polygenictiy, initial allele frequency and effect size. Polygenicity is defined as the number of loci contributing to the trait value, for it .we simulated 7 different values \ref{fig:simulation_parameters}. For the initial allele frequency of the contributing loci, we simulated 6 different ranges \ref{fig:simulation_parameters} For the effect size of each contributing loci, we decided to do random draws from a fixed normal distribution of mean 0 and standard deviation of 2. 
+We decided to model only one trait in which selection would act. We defined the trait genetic architecture based on three key parameters: polygenictiy, initial allele frequency and effect size. Polygenicity is defined as the total number of loci contributing to the trait value, and we calculated traits with 7 different levels for it. \ref{simulation_parameters_table}). We also built traits which encoding loci had 6 different ranges of initial allele frequency (Table \ref{simulation_parameters_table}). Finally the the effect size of each contributing loci was drawn from \( \sim N(0, 2) \) for all simulations
 
-\subsubsection{Genetic value, heritability, environmental variance, environmental noise and phenotype}
+\subsubsection{Genetic value, heritability, environmental variance, and phenotype}
 
-We used the additive genetic model for calculating the genetic value of each individual, such that \( A = \sum a_i \), where \( A \) is the genetic value of the individual and \( a_i \) represents the effect size of the \( i \)-th contributing locus. 
-
-We simulated 5 different levels of heritability for our trait (see Figure \ref{fig:simulation_parameters}). For each simulation, we calculated $VE = \frac{VA - h^2 \cdot VA}{h^2}$ where \( VE \) is the environmental variance, \( VA \) represents the genetic variance from the given population \( VA = \text{Var}\left(\sum A_i\right) \), and \( h^2 \) is the heritability value for the given simulation. 
-
-Once we had the value of \( VE \) we drew random samples of environmental noise (\( en \)) for each individual from \( e_n \sim N(0, VE) \)to then calculate the phenotypic trait value of each individual by \( y = A + en \).
+We used the additive genetic model for calculating the genetic value of each individual, such that \\ $A_n=\sum a_i$, where $A_n$ is the genetic value of the individual $n$ and \( a_i \) represents the effect size of the \( i \)-th contributing locus. We simulated 5 different levels of heritability for the trait (Table \ref{simulation_parameters_table}). For each simulation, using the breeders equation, we calculated:
+\[
+VE = \frac{VA - h^2 \cdot VA}{h^2}
+\]
+where \( VE \) is the environmental variance, \( VA \) represents the genetic variance from the given population \( VA = \text{Var}\left(\sum A_n\right) \), and \( h^2 \) is the heritability value for the given simulation. Once we had the value of \( VE \) we drew random samples of environmental noise (\( en \)) for each individual \( en_n \sim N(0, VE) \)to then calculate the phenotypic trait value of each individual by \( y_n = A_n+ en_n \). For each simulation we obtain the standard deviation and mean of the initial population to then use those values to standarize the phenotypes each generation before the fitness calculation.
 
 \subsubsection{Selection function and fitness}
-Each individual was subjected to stabilizing selection based on their phenotype value with the formula:
+Each individual n was subjected to stabilizing selection based on their phenotypic value with the formula:
 \[
-\text{fitness} = \exp\left(-0.5 \times \frac{(\text{st\_phenotype} - \text{optima})^2}{\text{variance}}\right)
+\text{Fitness}_\text{n} = \exp\left(-0.5 \times \frac{(\text{Phenotype}_\text{n} - {\text{Optimum phenotype}_\text{k}})^2}{\text{V}_\text{s}}\right)
 \]
-We simulated 4 different strength of stabilizing selection \ref{fig:simulation_parameters}. The value of fitness would serve as a probability of survival to the next generation. 
+Were $\text{Optimum phenotype}_\text{k}$ refers to the optimum phenotype at the k environment and $\text{V}_\text{s}$ represent the strength of stabilizing selection. We simulated 4 different levels of it (Table \ref{simulation_parameters_table}). Finally,  $\text{Fitness}_\text{n}$ would serve as a probability of survival of the individual n to the next generation. The different strength of selection are depicted in Fig. \ref{fig:selection_strength}. 
 
 \subsubsection{Population density control}
-All populations had a starting population size of 2310 individuals, but after the first selection episode, and on every cycle, if the population reached a size larger than 900 insividuals, we would randomly subtract individuals to keep it at 900. This is based on the observations of the real experiment, were the biggest populations only reached a maximum of 900 individuals. 
+In all simulations the starting population size was 2310 individuals, but after the first selection episode, and on every cycle, if the population reached a size larger than 900 individuals, we would randomly subtract individuals to keep it at 900. This is based on the observations of the real experiment, where the biggest populations only reached a maximum of 900 individuals. 
 
 \subsubsection{Environmental gradient}
-We simulated 9 different environments (see Table \ref{simulation_parameters_table}). Each one defined by its distance in standard deviations from the initial phenotype mean. Environment 0 would have 0 standard deviations from the initial phenotype mean of the population, so individuals situated exactly in the initial mean phenotype value would have a fitness of 1. 
+We simulated 9 different environments (Table \ref{simulation_parameters_table}), each one defined by its distance in standard deviations from the initial phenotype mean. Environment 0 would have 0 standard deviations from the initial phenotype mean, so that individuals situated exactly in the initial mean phenotype value would have a fitness of 1. The different simulated environments are depicted in Fig. \ref{fig:selection_strength}. 
 
-\subsubsection{Specifics to \textit{A thaliana} biology}
-Because one fo our main focus was to simulate the evolutionary dynamics of the Grene-net project we decided to add some specifics of \textit{A thaliana} biology, besides its populations real genetic diversity. Firstly, we used \textit{A thaliana} mean recombination rate across the genome of 3e-6 probability of recombination per base pair per generation. We simulated non-overalpping generations, since Arabiodpsis is an annual plant, so only the progeny produced in one generation would make it to the next one and all progenitors would perish in each cycle. Finally, we decided to use strict information about \textit{A thaliana} reproductive strategies, simulating a 97% slefing rate, 3% outcrossing and the number of offspring for each individual was a random draw from poission distribution with gamma = 5.57. This value informed from actual common garden experiments (cite Laura?) 
+\subsubsection{Specifics to \textit{A. thaliana} biology}
+Because one of our main focus was to simulate the evolutionary dynamics of the Grene-net project we decided to add some specifics of \textit{A. thaliana} biology, besides its populations genetic diversity. Firstly, we used \textit{A. thaliana} mean recombination rate across the genome of $3 \times 10^{-6}$. Since \textit{A. thaliana} is an annual plant, we simulated non-overlapping generations, and all progenitors would perish in each cycle. Finally, we decided to use strict information about \textit{A. thaliana} reproductive strategies, simulating a 97\% slefing rate, 3\% outcrossing rate, and a litter size taken from $\sim Poisson(7.247)$. This value was informed from actual common garden experiments (cite Laura?). 
 
 \subsubsection{Data Structure}
-Since we wanted to simulate the genetic diversity on its fullest during the simulation to be able to accurately benchmark the software to detect the causal loci after, we decided to make use of the tree sequence structures for the simulations. For this, we took the initial population VCF file with the full genetic information and converted into a tree sequence structure. After defining the genetic architecture of each simulation and randomly choosing hte contributing loci, we kept only those mutations in the tree sequence structure and subtracted and saved separetly all other mutations, making the tree lighter and faster to run on slim. For each simulation, after it finished we took the tree sequence output and overlaid the previously removed neutral mutations. Obtaining as a final results the tree sequence with neutral and adaptive mutations on its fullest. 
-
-\subsubsection{Simulation software}
-We used SLiM (Haller and Messer 2019) for running a total of 189000 independent forward in time genetic simulations for 10 generations based on all combination of parameters plus repetitions. SLiM uniquely allowed us to have flexibility to simulate all the indicated parameters, model specifics to \textit{A thaliana} biology and work with tree sequences structures to achieve our goals. 
+Since we wanted to simulate the genetic diversity on its fullest to be able to accurately benchmark the softwares to detect the causal loci down the line, we decided to make use of the tree sequence structures for the simulations \url{https://github.com/tskit-dev/pyslim}. For this, we took the initial population VCF file with the full genetic information and converted into a tree sequence structure. After defining the genetic architecture of each simulation and randomly choosing the contributing loci, we kept only those mutations in the tree sequence structure and subtracted and separately saved all other neutral mutations, making the tree lighter and faster to run on SLiM. For each simulation, after it finished we overlaid the previously removed neutral mutations on the output tree, obtaining as the final result the tree sequence with neutral and adaptive mutations on its fullest. 
 
 \subsubsection{Data Collection}
-During the simulations on each generation we collected key parameters to understand the evolutionary dynamics including: fitness mean, fitness variance, population size, phenotype mean and phenotype variance. 
+For each simulation on each generation we collected key parameters including: fitness mean, fitness variance, population size, phenotype mean and phenotype variance. 
 
 \subsubsection{Reproducibility}
-To ensure reproducibility and trackability of all analysis, we developed a snakemke pipeline starting with the initial VCF file from the founder population and finalazing with the benchmarking of all the sofwares. If desired the pipeline could be rerun on its fullest obtaining the same results. Also the code for the entire pipeline is fullest available in the github repository \url{https://github.com/Tatianabellagio/slim_grenenet}.
+To ensure reproducibility and trackability of all analysis, we developed a snakemake \citep{Molder2021-ho} pipeline starting with the initial VCF file from the founder population and finalizing with the benchmarking of all softwares. If desired, the pipeline could be rerun on its fullest. The code for the entire pipeline is available at \url{https://github.com/Tatianabellagio/slim_grenenet}.
 
+As observed in \ref{fig:slopes_lr} 
 \subsection{Benchmarking}
 
 We benchmark 5 different softwares, that can be clasified in two main categories. The first category of softwares comes from 
@@ -133,6 +135,17 @@ HapFM (Haplotype based Fine Mapping) Approach
 
 \section{Results}
 
+\subsection{Survivalship vs each simulation parameter}
+
+In order to understand the relationship between each of the parameters independently of all others used in our simulation and the population's survivalship, we decided to run logistic regressions for each of the parameteres, keeping all the other parameters constant. Survivalship was meassured as the percentages of populations that survived to the 10th generation. For this analysis, we report the slope fitted for the logistic regression divided by the estimated error. A positive slope would indicate a positive relationship between survivalship and an increment in the evaluated parameters. We only considered slopes which p value was less than 0.05. 
+
+As observed in \ref{fig:slopes_lr} certain parameters had expected behaviour, such is the case of the distance to the new optimum from the initial population mean, always showing a negative slope for any combination of the other parameters. This aligns with an expected behaviour, where, the further the new optimum is from the initial mean of the population, the less survivalship the populations are going to encounter. The opposite relationship is observed in the case fo the selection strength, which is also expected. For any combination of parameters an incresease in the variance value for the calculation of the fitness function leads to an increase suvivalship of the population. In the case of heritability, most values are above 0, indicating that most of the times an increase in the heritability value would leas to an increase survivalship. For the the polygenicity an inital allele frecuency of the contributing loci the slope values are disperse across positive and negative values, so we decided to explore this further. 
+
+First, in \ref{fig:survivalship_forpoly} we can observe the proportion of populations that survived for the combination of each parameters but polygenicity. Then, in \ref{fig:polydependence} the layout of parameters is the same, but now we instead of suvivalship the color scheme represents the slope of each logistic regression run between  survivalship and polygenicity for each combination of parameters. In \ref{fig:poly_survival_transparency} we overalp \ref{fig:survivalship_forpoly} on \ref{fig:polydependence} and now survivalship is represented as trasnparency. This hihglights the a clear diagonal pattern of positive slopes when populations have an intermediate survivalship. This supports the hypothesis that populations wiht a more polygenic trait are favored at the 'edge' of the ditribution. When selection is not  very strong or the population is close the new optimum (lower corner) the polygenicity is not a limiting factor, neither when selection is very strong or the populations are very far away from the new optimum (upper corner), since most population die anyways (as shown in \ref{fig:survivalship_forpoly}). Finally, we see some negative relationships between survivalship and polygenicity mainly at very low allele frequency and when the new optimum is far away, this might be a side effect from the phenotypes standarization. As shown in \ref{fig:phenotypes_initial} the phenotypes distribution in the monogenic architecture with low allele frequency (0-5\%) has a peak at the tails, wich is an artifact of the phenotype standarization. 
+
+Also, we were interested in why heritability did not show aways a positive reltaionship with survivalship in \ref{fig:slopes_lr} as would be expected, since heritability is the evolutioary memory of evolution and we would expect that heritability would be necessary fro population to evolve towards the new optimum. To explore this, we first show the relationship between survivalship and all the other parameters but heritability \ref{fig:h2_survival_transparency} and then with this same 
+
+
 \begin{table}
 \centering
 \begin{tabularx}{\textwidth}[t]{XX} \toprule
@@ -147,18 +160,63 @@ HapFM (Haplotype based Fine Mapping) Approach
 \label{simulation_parameters_table}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[b]
     \centering
-    \includegraphics[width=1.1\textwidth]{figures/phenotypes_initial.png}
+    \includegraphics[width=1\textwidth]{figures/parameters.pdf}
+    \caption{Caption of the figure.}
+    \label{fig:parameters}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/phenotypes_initial-3.pdf}
     \caption{Caption of the figure.}
     \label{fig:phenotypes_initial}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[b]
     \centering
-    \includegraphics[width=1\textwidth]{figures/phenotypes_initial_onlymonogenic (1).png}
+    \includegraphics[width=1\textwidth]{figures/phenotypes_initial_onlymonogenic-2.pdf}
     \caption{Caption of the figure.}
     \label{fig:phenotypes_initial_mono}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/slopes_lr.pdf}
+    \caption{Caption of the figure.}
+    \label{fig:slopes_lr}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/poly_panel_figure_2plots.pdf}
+    \caption{Caption of the figure.}
+    \label{fig:poly_panel_figure}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/h2_panel_figure_2plots.pdf}
+    \caption{Caption of the figure.}
+    \label{fig:h2_panel_figure}
+\end{figure}
+
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/survivalship_forpoly-1.pdf}
+    \caption{Caption of the figure.}
+    \label{fig:survivalship_forpoly}
+\end{figure}
+
+
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/survivalshipforh2-1.pdf}
+    \caption{Caption of the figure.}
+    \label{fig:survivalshipforh2}
 \end{figure}
 
 \section{Discussion}
