@@ -1184,6 +1184,100 @@
   language = "en"
 }
 
+@ARTICLE{Haller2019-lm,
+  title    = "Tree-sequence recording in {SLiM} opens new horizons for
+              forward-time simulation of whole genomes",
+  author   = "Haller, Benjamin C and Galloway, Jared and Kelleher, Jerome and
+              Messer, Philipp W and Ralph, Peter L",
+  abstract = "There is an increasing demand for evolutionary models to
+              incorporate relatively realistic dynamics, ranging from selection
+              at many genomic sites to complex demography, population
+              structure, and ecological interactions. Such models can generally
+              be implemented as individual-based forward simulations, but the
+              large computational overhead of these models often makes
+              simulation of whole chromosome sequences in large populations
+              infeasible. This situation presents an important obstacle to the
+              field that requires conceptual advances to overcome. The recently
+              developed tree-sequence recording method (Kelleher, Thornton,
+              Ashander, \& Ralph, 2018), which stores the genealogical history
+              of all genomes in the simulated population, could provide such an
+              advance. This method has several benefits: (1) it allows neutral
+              mutations to be omitted entirely from forward-time simulations
+              and added later, thereby dramatically improving computational
+              efficiency; (2) it allows neutral burn-in to be constructed
+              extremely efficiently after the fact, using ``recapitation''; (3)
+              it allows direct examination and analysis of the genealogical
+              trees along the genome; and (4) it provides a compact
+              representation of a population's genealogy that can be analysed
+              in Python using the msprime package. We have implemented the
+              tree-sequence recording method in SLiM 3 (a free, open-source
+              evolutionary simulation software package) and extended it to
+              allow the recording of non-neutral mutations, greatly broadening
+              the utility of this method. To demonstrate the versatility and
+              performance of this approach, we showcase several practical
+              applications that would have been beyond the reach of previously
+              existing methods, opening up new horizons for the modelling and
+              exploration of evolutionary processes.",
+  journal  = "Mol. Ecol. Resour.",
+  volume   =  19,
+  number   =  2,
+  pages    = "552--566",
+  month    =  mar,
+  year     =  2019,
+  keywords = "background selection; coalescent; genealogical history; pedigree
+              recording; selective sweeps; tree sequences;first year paper",
+  language = "en"
+}
+
+@ARTICLE{Kelleher2018-jb,
+  title    = "Efficient pedigree recording for fast population genetics
+              simulation",
+  author   = "Kelleher, Jerome and Thornton, Kevin R and Ashander, Jaime and
+              Ralph, Peter L",
+  abstract = "In this paper we describe how to efficiently record the entire
+              genetic history of a population in forwards-time,
+              individual-based population genetics simulations with arbitrary
+              breeding models, population structure and demography. This
+              approach dramatically reduces the computational burden of
+              tracking individual genomes by allowing us to simulate only those
+              loci that may affect reproduction (those having non-neutral
+              variants). The genetic history of the population is recorded as a
+              succinct tree sequence as introduced in the software package
+              msprime, on which neutral mutations can be quickly placed
+              afterwards. Recording the results of each breeding event requires
+              storage that grows linearly with time, but there is a great deal
+              of redundancy in this information. We solve this storage problem
+              by providing an algorithm to quickly 'simplify' a tree sequence
+              by removing this irrelevant history for a given set of genomes.
+              By periodically simplifying the history with respect to the
+              extant population, we show that the total storage space required
+              is modest and overall large efficiency gains can be made over
+              classical forward-time simulations. We implement a
+              general-purpose framework for recording and simplifying
+              genealogical data, which can be used to make simulations of any
+              population model more efficient. We modify two popular
+              forwards-time simulation frameworks to use this new approach and
+              observe efficiency gains in large, whole-genome simulations of
+              one to two orders of magnitude. In addition to speed, our method
+              for recording pedigrees has several advantages: (1) All marginal
+              genealogies of the simulated individuals are recorded, rather
+              than just genotypes. (2) A population of N individuals with M
+              polymorphic sites can be stored in O(N log N + M) space, making
+              it feasible to store a simulation's entire final generation as
+              well as its history. (3) A simulation can easily be initialized
+              with a more efficient coalescent simulation of deep history. The
+              software for recording and processing tree sequences is named
+              tskit.",
+  journal  = "PLoS Comput. Biol.",
+  volume   =  14,
+  number   =  11,
+  pages    = "e1006581",
+  month    =  nov,
+  year     =  2018,
+  keywords = "first year paper",
+  language = "en"
+}
+
 @ARTICLE{Stetter2018-st,
   title    = "Genetic architecture and selective sweeps after polygenic
               adaptation to distant trait optima",
@@ -2081,6 +2175,37 @@
   language = "en"
 }
 
+@ARTICLE{Kelleher2019-ev,
+  title    = "Inferring whole-genome histories in large population datasets",
+  author   = "Kelleher, Jerome and Wong, Yan and Wohns, Anthony W and Fadil,
+              Chaimaa and Albers, Patrick K and McVean, Gil",
+  abstract = "Inferring the full genealogical history of a set of DNA sequences
+              is a core problem in evolutionary biology, because this history
+              encodes information about the events and forces that have
+              influenced a species. However, current methods are limited, and
+              the most accurate techniques are able to process no more than a
+              hundred samples. As datasets that consist of millions of genomes
+              are now being collected, there is a need for scalable and
+              efficient inference methods to fully utilize these resources.
+              Here we introduce an algorithm that is able to not only infer
+              whole-genome histories with comparable accuracy to the
+              state-of-the-art but also process four orders of magnitude more
+              sequences. The approach also provides an 'evolutionary encoding'
+              of the data, enabling efficient calculation of relevant
+              statistics. We apply the method to human data from the 1000
+              Genomes Project, Simons Genome Diversity Project and UK Biobank,
+              showing that the inferred genealogies are rich in biological
+              signal and efficient to process.",
+  journal  = "Nat. Genet.",
+  volume   =  51,
+  number   =  9,
+  pages    = "1330--1338",
+  month    =  sep,
+  year     =  2019,
+  keywords = "first year paper",
+  language = "en"
+}
+
 @ARTICLE{Osmond2020-no,
   title    = "Genetic Signatures of Evolutionary Rescue by a Selective Sweep",
   author   = "Osmond, Matthew M and Coop, Graham",
@@ -2154,6 +2279,38 @@
   pages    = "e1010437",
   month    =  oct,
   year     =  2022,
+  keywords = "first year paper",
+  language = "en"
+}
+
+@ARTICLE{Vlachos2019-nf,
+  title    = "Benchmarking software tools for detecting and quantifying
+              selection in evolve and resequencing studies",
+  author   = "Vlachos, Christos and Burny, Claire and Pelizzola, Marta and
+              Borges, Rui and Futschik, Andreas and Kofler, Robert and
+              Schl{\"o}tterer, Christian",
+  abstract = "BACKGROUND: The combination of experimental evolution with
+              whole-genome resequencing of pooled individuals, also called
+              evolve and resequence (E\&R) is a powerful approach to study the
+              selection processes and to infer the architecture of adaptive
+              variation. Given the large potential of this method, a range of
+              software tools were developed to identify selected SNPs and to
+              measure their selection coefficients. RESULTS: In this
+              benchmarking study, we compare 15 test statistics implemented in
+              10 software tools using three different scenarios. We demonstrate
+              that the power of the methods differs among the scenarios, but
+              some consistently outperform others. LRT-1, CLEAR, and the CMH
+              test perform best despite LRT-1 and the CMH test not requiring
+              time series data. CLEAR provides the most accurate estimates of
+              selection coefficients. CONCLUSION: This benchmark study will not
+              only facilitate the analysis of already existing data, but also
+              affect the design of future data collections.",
+  journal  = "Genome Biol.",
+  volume   =  20,
+  number   =  1,
+  pages    = "169",
+  month    =  aug,
+  year     =  2019,
   keywords = "first year paper",
   language = "en"
 }
